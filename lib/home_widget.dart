@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:rgb_control_app/color_picker_widget.dart';
+import 'package:rgb_control_app/random_color_widget.dart';
+import 'package:rgb_control_app/programmed_color_widget.dart';
+
 class HomeWidget extends StatefulWidget {
   @override
   createState() => new HomeWidgetState();
@@ -7,8 +11,31 @@ class HomeWidget extends StatefulWidget {
 
 class HomeWidgetState extends State<HomeWidget> {
 
-  void _onColorPickerSelected() {
+  void _onOpenWidgetClicked(Widget widget) {
+    Navigator.push(
+      context,
+      new MaterialPageRoute(builder: (context) => widget),
+    );
+  }
 
+  Widget _buildMenuItem(String img, String label, Widget widget) {
+    return new InkWell(
+      onTap: () { _onOpenWidgetClicked(widget); },
+      child: new Row(
+        children: <Widget>[
+          new Expanded(
+            child: new Image.asset(img),
+            flex: 1
+          ),
+          new Expanded(
+            child: new RichText(
+              text: new TextSpan(text: label, style: new TextStyle(fontWeight: FontWeight.bold, color: Colors.black87, fontSize: 20.0)),
+            ),
+            flex: 2,
+          )
+        ],
+      )
+    );
   }
 
   @override
@@ -17,35 +44,12 @@ class HomeWidgetState extends State<HomeWidget> {
       appBar: new AppBar(
         title: new Text('RGB Control')
       ),
-      body: new Center(
-        child: new Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      body: new Container(
+        child: new ListView(
           children: <Widget>[
-            new InkWell(
-              onTap: () { _onColorPickerSelected(); },
-              child: new Row(
-                children: <Widget>[
-                  new Expanded(
-                    child: new Image.asset('images/color-picker.png'),
-                  ),
-                  new Expanded(
-                    child: new RichText(
-                      text: new TextSpan(text: 'Color Picker', style: new TextStyle(fontWeight: FontWeight.bold, color: Colors.black87, fontSize: 20.0)),
-                    ),
-                  )
-                ],
-              )
-            ),
-            new Row(children: <Widget>[
-              new Expanded(
-                child: new Image.asset('images/random.png'),
-              ),
-              new Expanded(
-                child: new RichText(
-                  text: new TextSpan(text: 'Random Color', style: new TextStyle(fontWeight: FontWeight.bold, color: Colors.black87, fontSize: 20.0)),
-                )
-              )
-            ],)
+            _buildMenuItem('images/color-picker.png', 'Color Picker', new ColorPickerWidget()),
+            _buildMenuItem('images/random.png', 'Random Color', new RandomColorWidget()),
+            _buildMenuItem('images/programmed.png', 'Programmed Color', new ProgrammedColorWidget()),
           ],
         ),
       )
