@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rgb_control_app/color_picker_widget.dart';
 import 'package:rgb_control_app/random_color_widget.dart';
 import 'package:rgb_control_app/programmed_color_widget.dart';
+import 'package:rgb_control_app/settings_widget.dart';
 
 class HomeWidget extends StatefulWidget {
   @override
@@ -12,10 +13,11 @@ class HomeWidget extends StatefulWidget {
 class HomeWidgetState extends State<HomeWidget> {
 
   void _onOpenWidgetClicked(Widget widget) {
-    Navigator.push(
-      context,
-      new MaterialPageRoute(builder: (context) => widget),
-    );
+    Navigator.of(context).push(new MaterialPageRoute<dynamic>(
+      builder: (BuildContext context) {
+        return widget;
+      }
+    ));
   }
 
   Widget _buildMenuItem(String img, String label, Widget widget) {
@@ -50,6 +52,7 @@ class HomeWidgetState extends State<HomeWidget> {
             _buildMenuItem('images/color-picker.png', 'Color Picker', new ColorPickerWidget()),
             _buildMenuItem('images/random.png', 'Random Color', new RandomColorWidget()),
             _buildMenuItem('images/programmed.png', 'Programmed Color', new ProgrammedColorWidget()),
+            _buildMenuItem('images/settings.png', 'Settings', new SettingsWidget()),
           ],
         ),
       )
