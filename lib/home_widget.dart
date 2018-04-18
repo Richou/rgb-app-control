@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:rgb_control_app/color_picker_widget.dart';
 import 'package:rgb_control_app/random_color_widget.dart';
-import 'package:rgb_control_app/programmed_color_widget.dart';
+import 'package:rgb_control_app/favorites_color_widget.dart';
 import 'package:rgb_control_app/settings_widget.dart';
 
 class HomeWidget extends StatefulWidget {
@@ -51,7 +51,7 @@ class HomeWidgetState extends State<HomeWidget> {
           children: <Widget>[
             _buildMenuItem('images/color-picker.png', 'Color Picker', new ColorPickerWidget()),
             _buildMenuItem('images/random.png', 'Random Color', new RandomColorWidget()),
-            _buildMenuItem('images/programmed.png', 'Programmed Color', new ProgrammedColorWidget()),
+            _buildMenuItem('images/star.png', 'Favorites Color', new FavoritesColorWidget()),
             _buildMenuItem('images/settings.png', 'Settings', new SettingsWidget()),
           ],
         ),
