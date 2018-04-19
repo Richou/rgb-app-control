@@ -27,6 +27,10 @@ class RandomColorWidgetState extends State<RandomColorWidget> {
     _computeColorStringWithMapping();
   }
 
+  _saveColorToFavorite() {
+
+  }
+
   _computeColorStringWithMapping() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String redBinding = sharedPreferences.getString("RedBinded");
@@ -42,36 +46,56 @@ class RandomColorWidgetState extends State<RandomColorWidget> {
       appBar: new AppBar(
         title: new Text('Random Color')
       ),
-      body: new Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: new Column(
-          children: <Widget>[
-            new Center(
+      body: new ListView(
+        children: <Widget>[
+          new Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: new Center(
               child: new Text("Click on the Button bellow to create random color"),
             ),
-            new Padding(
-              padding: const EdgeInsets.only(
-                top: 16.0,
-                bottom: 16.0
-              ),
-              child: new RaisedButton(
-                child: const Text('RANDOM COLOR'),
-                textColor: Colors.white,
-                color: Colors.blue,
-                onPressed: () {
-                  _computeRandomColor();
-                },
-              ),
+          ),
+          new Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: new RaisedButton(
+              child: const Text('RANDOM COLOR'),
+              textColor: Colors.white,
+              color: Colors.blue,
+              onPressed: () {
+                _computeRandomColor();
+              },
             ),
-            new Padding(
-              padding: const EdgeInsets.only(
-                top: 16.0,
-                bottom: 16.0
+          ),
+          new Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: 
+              new Center(
+                child: new Text(_rgbString),
+              )
+          ),
+          new Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: new Container(
+              decoration: new BoxDecoration(
+                color: _randomColor,
+                border: new Border.all(
+                  color: _randomColor,
+                  width: 40.0,
+                ),
               ),
-              child: new Text(_rgbString),
-            )
-          ],
-        ),
+            ),    
+          ),
+          new Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: new RaisedButton(
+              child: const Text('SAVE COLOR TO FAVORITE'),
+              textColor: Colors.white,
+              color: Colors.blue,
+              onPressed: () {
+                _saveColorToFavorite();
+              },
+            ),
+          )
+        ],
       )
     );
   }
