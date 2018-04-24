@@ -4,17 +4,23 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ColorRequest {
   sendColor(Color color) async {
-    String ipAddress = await _getSavedIpAddressFromSharedPrefs();
-    print("http://$ipAddress");
-    _callApi("http://$ipAddress:80");
+    String host = await _getFullHostFromSharedPrefs();
+    print("$host");
+    final response = await _callApi("$host/color");
+    print(response);
   }
 
   _callApi(String host) async {
     return await http.get(host);
   }
 
-  _getSavedIpAddressFromSharedPrefs() async {
+  _getFullHostFromSharedPrefs() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getString("IPAddress");
+    String ipAdress = sharedPreferences.getString("IPAddress");
+    int port = sharedPreferences.getInt("Port");
+    if (port == 80) {
+      return "http://$ipAdress";
+    }
+    return "http://$ipAdress:$port";
   }
 }

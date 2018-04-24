@@ -10,10 +10,12 @@ class SettingsWidgetState extends State<SettingsWidget> {
 
   final formKey = new GlobalKey<FormState>();
   final _ipAddressController = new TextEditingController();
+  final _portController = new TextEditingController();
 
   List<String> _rgbValues = new List<String>();
 
   String _ipAddress;
+  int _port;
   String _redBinding;
   String _greenBinding;
   String _blueBinding;
@@ -23,6 +25,7 @@ class SettingsWidgetState extends State<SettingsWidget> {
     super.initState();
     _rgbValues.addAll(["red", "green", "blue"]);
     _setSavedIpAddress();
+    _setSavedPort();
     _setSavedRedBinding();
     _setSavedGreenBinding();
     _setSavedBlueBinding();
@@ -54,6 +57,11 @@ class SettingsWidgetState extends State<SettingsWidget> {
     _ipAddressController.text = sharedPreferences.getString("IPAddress");
   }
 
+  _setSavedPort() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    _portController.text = sharedPreferences.getInt("Port").toString();
+  }
+
   _setSavedRedBinding() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     _onRedChanged(sharedPreferences.getString("RedBinded"));
@@ -72,6 +80,7 @@ class SettingsWidgetState extends State<SettingsWidget> {
   _onSavePressed() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString("IPAddress", _ipAddress);
+    sharedPreferences.setInt("Port", _port);
     sharedPreferences.setString("RedBinded", _redBinding);
     sharedPreferences.setString("GreenBinded", _greenBinding);
     sharedPreferences.setString("BlueBinded", _blueBinding);
@@ -122,6 +131,12 @@ class SettingsWidgetState extends State<SettingsWidget> {
                     keyboardType: TextInputType.number,
                     controller: _ipAddressController,
                     onSaved: (val) => _ipAddress = _ipAddressController.text,
+                  ),
+                  new TextFormField(
+                    decoration: new InputDecoration(labelText: 'Port'),
+                    keyboardType: TextInputType.number,
+                    controller: _portController,
+                    onSaved: (val) => _port = int.parse(_portController.text),
                   ),
                   new Padding(
                     padding: const EdgeInsets.only(
