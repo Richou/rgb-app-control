@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:rgb_control_app/color_request.dart';
 
 class RandomColorWidget extends StatefulWidget {
   @override
@@ -11,11 +12,13 @@ class RandomColorWidgetState extends State<RandomColorWidget> {
 
   Color _randomColor;
   String _rgbString = "N/A";
+  ColorRequest colorRequest;
 
   @override
   void initState() {
     super.initState();
     _randomColor = Colors.green;
+    colorRequest = new ColorRequest();
   }
 
   _computeRandomColor() {
@@ -25,6 +28,11 @@ class RandomColorWidgetState extends State<RandomColorWidget> {
       _randomColor = theColor;
     });
     _computeColorStringWithMapping();
+    _sendColorToIoT();
+  }
+
+  _sendColorToIoT() {
+    colorRequest.sendColor(_randomColor);
   }
 
   _saveColorToFavorite() {
