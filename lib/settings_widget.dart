@@ -28,9 +28,7 @@ class SettingsWidgetState extends State<SettingsWidget> {
     _rgbValues.addAll(["red", "green", "blue"]);
     _setSavedIpAddress();
     _setSavedPort();
-    _setSavedRedBinding();
-    _setSavedGreenBinding();
-    _setSavedBlueBinding();
+    _setSavedColorsBinding();
   }
 
   void _onRedChanged(String value) {
@@ -64,19 +62,13 @@ class SettingsWidgetState extends State<SettingsWidget> {
     _portController.text = sharedPreferences.getInt("Port").toString();
   }
 
-  _setSavedRedBinding() async {
+  _setSavedColorsBinding() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    _onRedChanged(sharedPreferences.getString("RedBinded"));
-  }
-
-  _setSavedGreenBinding() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    _onGreenChanged(sharedPreferences.getString("GreenBinded"));
-  }
-
-  _setSavedBlueBinding() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    _onBlueChanged(sharedPreferences.getString("BlueBinded"));
+    String jsoned = sharedPreferences.getString("ColorBindings");
+    ColorBindings colorBindings = ColorBindings.fromJson(json.decode(jsoned));
+    _onRedChanged(colorBindings.red);
+    _onGreenChanged(colorBindings.green);
+    _onBlueChanged(colorBindings.blue);
   }
 
   _onSavePressed() async {

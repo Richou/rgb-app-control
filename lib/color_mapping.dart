@@ -1,10 +1,36 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:async';
 
 class ColorMapping {
-    /*String jsoned = json.encode(colorBindings.toMap());
-    ColorBindings revert = ColorBindings.fromJson(json.decode(jsoned));
-    print(revert.red);*/
+
+    Future<ColorValues> getColorMappings(Color color) async {
+      Map colorMapped = convertColorToMap(color);
+      ColorBindings colorBinded = await getColorBindings();
+      return new ColorValues()
+        ..red = colorMapped[colorBinded.red]
+        ..blue = colorMapped[colorBinded.blue]
+        ..green = colorMapped[colorBinded.green];
+    }
+
+    Future<ColorBindings> getColorBindings() async {
+      String colorBindingJson = await _getColorBindingsString();
+      return ColorBindings.fromJson(json.decode(colorBindingJson));
+    }
+
+    _getColorBindingsString() async {
+      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      return sharedPreferences.getString("ColorBindings");
+    }
+
+    Map convertColorToMap(Color color) {
+      Map colorMap = new Map();
+      colorMap['red'] = color.red;
+      colorMap['green'] = color.green;
+      colorMap['blue'] = color.blue;
+      return colorMap;
+    }
 }
 
 class ColorBindings {
