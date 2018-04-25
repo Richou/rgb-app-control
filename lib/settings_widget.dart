@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:rgb_control_app/color_mapping.dart';
+import 'dart:convert';
 
 class SettingsWidget extends StatefulWidget {
   @override
@@ -81,10 +83,12 @@ class SettingsWidgetState extends State<SettingsWidget> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString("IPAddress", _ipAddress);
     sharedPreferences.setInt("Port", _port);
-    sharedPreferences.setString("RedBinded", _redBinding);
-    sharedPreferences.setString("GreenBinded", _greenBinding);
-    sharedPreferences.setString("BlueBinded", _blueBinding);
+    ColorBindings colorBindings = new ColorBindings()
+      ..red = _redBinding
+      ..blue = _blueBinding
+      ..green = _greenBinding;
 
+    sharedPreferences.setString("ColorBindings", json.encode(colorBindings.toMap()));
     Navigator.pop(context);
   }
 

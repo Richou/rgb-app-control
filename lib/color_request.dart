@@ -6,7 +6,7 @@ class ColorRequest {
   sendColor(Color color) async {
     String host = await _getFullHostFromSharedPrefs();
     print("$host");
-    final response = await _callApi("$host/color");
+    final response = await _callApi("$host/color?red=${color.red}&green=${color.green}&blue=${color.blue}");
     print(response);
   }
 
