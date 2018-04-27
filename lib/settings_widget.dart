@@ -17,7 +17,7 @@ class SettingsWidgetState extends State<SettingsWidget> {
   List<String> _rgbValues = new List<String>();
 
   String _ipAddress;
-  int _port;
+  int _port = 80;
   String _redBinding;
   String _greenBinding;
   String _blueBinding;
@@ -59,16 +59,23 @@ class SettingsWidgetState extends State<SettingsWidget> {
 
   _setSavedPort() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    _portController.text = sharedPreferences.getInt("Port").toString();
+    int savedPort = sharedPreferences.getInt("Port");
+    if (savedPort == null) {
+      _portController.text = "80";
+    } else {
+      _portController.text = savedPort.toString();    
+    }    
   }
 
   _setSavedColorsBinding() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String jsoned = sharedPreferences.getString("ColorBindings");
-    ColorBindings colorBindings = ColorBindings.fromJson(json.decode(jsoned));
-    _onRedChanged(colorBindings.red);
-    _onGreenChanged(colorBindings.green);
-    _onBlueChanged(colorBindings.blue);
+    if (jsoned != null) {
+      ColorBindings colorBindings = ColorBindings.fromJson(json.decode(jsoned));
+      _onRedChanged(colorBindings.red);
+      _onGreenChanged(colorBindings.green);
+      _onBlueChanged(colorBindings.blue);
+    }
   }
 
   _onSavePressed() async {
