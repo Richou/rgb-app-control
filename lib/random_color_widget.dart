@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:rgb_control_app/color_request.dart';
 
 class RandomColorWidget extends StatefulWidget {
@@ -40,10 +39,8 @@ class RandomColorWidgetState extends State<RandomColorWidget> {
   }
 
   _computeColorStringWithMapping() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String redBinding = sharedPreferences.getString("RedBinded");
     setState(() {
-      _rgbString = "$redBinding: ${_randomColor.red}, Green: ${_randomColor.green}, Blue: ${_randomColor.blue}";
+      _rgbString = "Red: ${_randomColor.red}, Green: ${_randomColor.green}, Blue: ${_randomColor.blue}";
     });
   }
 
