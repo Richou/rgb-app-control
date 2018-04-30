@@ -5,78 +5,135 @@ import 'package:rgb_control_app/random_color_widget.dart';
 import 'package:rgb_control_app/favorites_color_widget.dart';
 import 'package:rgb_control_app/settings_widget.dart';
 
+class NavigationIconView {
+  NavigationIconView({
+    Widget icon,
+    Widget body,
+    String title,
+    TickerProvider vsync,
+  }) : _body = body,
+       item = new BottomNavigationBarItem(
+         icon: icon,
+         title: new Text(title),
+       ),
+       controller = new AnimationController(
+         duration: kThemeAnimationDuration,
+         vsync: vsync,
+       ) {
+    _animation = new CurvedAnimation(
+      parent: controller,
+      curve: const Interval(0.5, 1.0, curve: Curves.fastOutSlowIn),
+    );
+  }
+
+  final Widget _body;
+  final BottomNavigationBarItem item;
+  final AnimationController controller;
+  CurvedAnimation _animation;
+
+  FadeTransition transition(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
+    Color iconColor = themeData.brightness == Brightness.light
+          ? themeData.primaryColor
+          : themeData.accentColor;
+    
+    return new FadeTransition(
+      opacity: _animation,
+      child: new SlideTransition(
+        position: new Tween<Offset>(
+          begin: const Offset(0.0, 0.02), // Slightly down.
+          end: Offset.zero,
+        ).animate(_animation),
+        child: new IconTheme(
+          data: new IconThemeData(
+            color: iconColor,
+            size: 120.0,
+          ),
+          child: new Semantics(
+            child: _body,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class HomeWidget extends StatefulWidget {
   @override
   createState() => new HomeWidgetState();
 }
 
-class CustomIcon extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final IconThemeData iconTheme = IconTheme.of(context);
-    return new Container(
-      margin: const EdgeInsets.all(4.0),
-      width: iconTheme.size - 8.0,
-      height: iconTheme.size - 8.0,
-      color: iconTheme.color,
-      child: new Image.asset('images/color-picker.png'),
-    );
-  }
-}
-
 class HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
   int _currentIndex = 0;
-  List<BottomNavigationBarItem> _navigationViews;
+  List<NavigationIconView> _navigationViews;
 
   @override
   void initState() {
     super.initState();
-    _navigationViews = <BottomNavigationBarItem>[
-      new BottomNavigationBarItem(
-        icon: new CustomIcon(),
-        title: new Text("Picker"),
+    _navigationViews = <NavigationIconView>[
+      new NavigationIconView(
+        icon: const Icon(Icons.select_all),
+        title: "Picker",
+        body: new ColorPickerWidget(),
+        vsync: this,
       ),
-      new BottomNavigationBarItem(
+      new NavigationIconView(
         icon: const Icon(Icons.shuffle),
-        title: new Text("Random"),
+        title: "Random",
+        body: new RandomColorWidget(),
+        vsync: this,
       ),
-      new BottomNavigationBarItem(
+      new NavigationIconView(
         icon: const Icon(Icons.favorite),
-        title: new Text("Favorites"),
+        title: "Favorites",
+        body: new FavoritesColorWidget(),
+        vsync: this,
       ),
-      new BottomNavigationBarItem(
+      new NavigationIconView(
         icon: const Icon(Icons.settings),
-        title: new Text("Settings"),
+        title: "Settings",
+        body: new SettingsWidget(),
+        vsync: this,
       )
     ];
+    for (NavigationIconView view in _navigationViews) {
+      view.controller.addListener(_rebuild);
+    }
+
+    _navigationViews[_currentIndex].controller.value = 1.0;
   }
 
-  void _onOpenWidgetClicked(Widget widget) {
-    Navigator.of(context).push(new MaterialPageRoute<dynamic>(
-      builder: (BuildContext context) {
-        return widget;
-      }
-    ));
+  @override
+  void dispose() {
+    for (NavigationIconView view in _navigationViews) {
+      view.controller.dispose();
+    }
+    super.dispose();
   }
 
-  Widget _buildMenuItem(String img, String label, Widget widget) {
-    return new InkWell(
-      onTap: () { _onOpenWidgetClicked(widget); },
-      child: new Row(
-        children: <Widget>[
-          new Expanded(
-            child: new Image.asset(img),
-            flex: 1
-          ),
-          new Expanded(
-            child: new RichText(
-              text: new TextSpan(text: label, style: new TextStyle(fontWeight: FontWeight.bold, color: Colors.black87, fontSize: 20.0)),
-            ),
-            flex: 2,
-          )
-        ],
-      )
-    );
+  void _rebuild() {
+    setState(() {
+      // Rebuild in order to animate views.
+    });
+  }
+
+  Widget _buildTransitionsStack() {
+    final List<FadeTransition> transitions = <FadeTransition>[];
+
+    for (NavigationIconView view in _navigationViews) {
+      transitions.add(view.transition(context));
+    }
+
+    // We want to have the newly animating (fading in) views on top.
+    transitions.sort((FadeTransition a, FadeTransition b) {
+      final Animation<double> aAnimation = a.opacity;
+      final Animation<double> bAnimation = b.opacity;
+      final double aValue = aAnimation.value;
+      final double bValue = bAnimation.value;
+      return aValue.compareTo(bValue);
+    });
+
+    return new Stack(children: transitions);
   }
 
   @override
@@ -84,13 +141,15 @@ class HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
 
     final BottomNavigationBar botNavBar = new BottomNavigationBar(
       items: _navigationViews
-          .map((BottomNavigationBarItem navigationView) => navigationView)
+          .map((NavigationIconView navigationView) => navigationView.item)
           .toList(),
       currentIndex: _currentIndex,
       type: BottomNavigationBarType.fixed,
       onTap: (int index) {
         setState(() {
+          _navigationViews[_currentIndex].controller.reverse();
           _currentIndex = index;
+          _navigationViews[_currentIndex].controller.forward();
         });
       },
     );
@@ -99,15 +158,8 @@ class HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
       appBar: new AppBar(
         title: new Text('RGB Control')
       ),
-      body: new Container(
-        child: new ListView(
-          children: <Widget>[
-            _buildMenuItem('images/color-picker.png', 'Color Picker', new ColorPickerWidget()),
-            _buildMenuItem('images/random.png', 'Random Color', new RandomColorWidget()),
-            _buildMenuItem('images/star.png', 'Demo', new FavoritesColorWidget()),
-            _buildMenuItem('images/settings.png', 'Settings', new SettingsWidget()),
-          ],
-        ),
+      body: new Center(
+        child: _buildTransitionsStack()
       ),
       bottomNavigationBar: botNavBar,
     );

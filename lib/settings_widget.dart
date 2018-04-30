@@ -88,7 +88,6 @@ class SettingsWidgetState extends State<SettingsWidget> {
       ..green = _greenBinding;
 
     sharedPreferences.setString("ColorBindings", json.encode(colorBindings.toMap()));
-    Navigator.pop(context);
   }
 
   _submit() {
@@ -104,12 +103,6 @@ class SettingsWidgetState extends State<SettingsWidget> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Settings'),
-        actions: <Widget>[
-          new IconButton(icon: const Icon(Icons.save), onPressed: () { _submit(); })
-        ],
-      ),
       body: new ListView(
         children: <Widget>[
           new Padding(
@@ -216,7 +209,15 @@ class SettingsWidgetState extends State<SettingsWidget> {
             ),
           ),
         ],
-      )
+      ),
+      floatingActionButton: new FloatingActionButton(
+        child: new Icon(Icons.check, size: 24.0),
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Theme.of(context).secondaryHeaderColor,
+        onPressed: () {
+          _submit();
+        },
+      ),
     );
   }
 }

@@ -44,19 +44,19 @@ class ColorPickerWidgetState extends State<ColorPickerWidget> {
   Widget build(BuildContext context) {
 
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Color Picker')
-      ),
       body: new Column(
         children: <Widget>[
-          new Padding(
+          new Expanded(
+            flex: 1,
+            child:new Padding(
               padding: const EdgeInsets.only(top: 15.0),
-              child:new Center(
-                child: new Text("Pick a color to change it"),
-              ),
+                child:new Center(
+                  child: new Text("Pick a color to change it"),
+                ),
+            ),
           ),
           new Expanded(
-            flex: 10,
+            flex: 8,
             child: new Padding(
               padding: const EdgeInsets.only(
                 right: 15.0,
@@ -70,18 +70,15 @@ class ColorPickerWidgetState extends State<ColorPickerWidget> {
               ),
             ),
           ),
-          new Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: new RaisedButton(
-              child: const Text('SAVE COLOR TO FAVORITE'),
-              textColor: Colors.white,
-              color: Colors.blue,
-              onPressed: () {
-                _saveColorToFavorite();
-              },
-            ),
-          ),
         ],
+      ),
+      floatingActionButton: new FloatingActionButton(
+        child: new Icon(Icons.favorite, size: 24.0),
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Theme.of(context).secondaryHeaderColor,
+        onPressed: () {
+          _saveColorToFavorite();
+        },
       )
     );
   }

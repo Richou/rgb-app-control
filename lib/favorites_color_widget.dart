@@ -10,9 +10,6 @@ class FavoritesColorWidgetState extends State<FavoritesColorWidget> {
   Widget build(BuildContext context) {
 
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Favorites Color')
-      ),
       body: new Center(
         child: new Text('Here is the list of your favorites color !'),
       )

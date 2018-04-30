@@ -48,9 +48,6 @@ class RandomColorWidgetState extends State<RandomColorWidget> {
   Widget build(BuildContext context) {
 
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Random Color')
-      ),
       body: new ListView(
         children: <Widget>[
           new Padding(
@@ -88,19 +85,16 @@ class RandomColorWidgetState extends State<RandomColorWidget> {
                 ),
               ),
             ),    
-          ),
-          new Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: new RaisedButton(
-              child: const Text('SAVE COLOR TO FAVORITE'),
-              textColor: Colors.white,
-              color: Colors.blue,
-              onPressed: () {
-                _saveColorToFavorite();
-              },
-            ),
           )
         ],
+      ),
+      floatingActionButton: new FloatingActionButton(
+        child: new Icon(Icons.favorite, size: 24.0),
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Theme.of(context).secondaryHeaderColor,
+        onPressed: () {
+          _saveColorToFavorite();
+        },
       )
     );
   }
