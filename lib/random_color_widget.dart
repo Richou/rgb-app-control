@@ -13,6 +13,10 @@ class RandomColorWidgetState extends State<RandomColorWidget> {
   String _rgbString = "N/A";
   ColorRequest colorRequest;
 
+  final snackBar = new SnackBar(
+    content: new Text('The color has been saved to Favorites !'),
+  );
+
   @override
   void initState() {
     super.initState();
@@ -34,10 +38,6 @@ class RandomColorWidgetState extends State<RandomColorWidget> {
     colorRequest.sendColor(_randomColor);
   }
 
-  _saveColorToFavorite() {
-
-  }
-
   _computeColorStringWithMapping() async {
     setState(() {
       _rgbString = "Red: ${_randomColor.red}, Green: ${_randomColor.green}, Blue: ${_randomColor.blue}";
@@ -46,12 +46,11 @@ class RandomColorWidgetState extends State<RandomColorWidget> {
 
   @override
   Widget build(BuildContext context) {
-
-    return new Scaffold(
-      body: new ListView(
+    return new Container(
+      child: new ListView(
         children: <Widget>[
           new Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(10.0),
             child: new Center(
               child: new Text("Click on the Button bellow to create random color"),
             ),
@@ -87,14 +86,6 @@ class RandomColorWidgetState extends State<RandomColorWidget> {
             ),    
           )
         ],
-      ),
-      floatingActionButton: new FloatingActionButton(
-        child: new Icon(Icons.favorite, size: 24.0),
-        backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Theme.of(context).secondaryHeaderColor,
-        onPressed: () {
-          _saveColorToFavorite();
-        },
       )
     );
   }

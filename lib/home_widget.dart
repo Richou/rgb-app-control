@@ -10,12 +10,14 @@ class NavigationIconView {
     Widget icon,
     Widget body,
     String title,
+    FloatingActionButton fab,
     TickerProvider vsync,
   }) : _body = body,
        item = new BottomNavigationBarItem(
          icon: icon,
          title: new Text(title),
        ),
+       fab = fab,
        controller = new AnimationController(
          duration: kThemeAnimationDuration,
          vsync: vsync,
@@ -28,6 +30,7 @@ class NavigationIconView {
 
   final Widget _body;
   final BottomNavigationBarItem item;
+  final FloatingActionButton fab;
   final AnimationController controller;
   CurvedAnimation _animation;
 
@@ -64,8 +67,12 @@ class HomeWidget extends StatefulWidget {
 }
 
 class HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
+
+  FloatingActionButton _fab;
   int _currentIndex = 0;
   List<NavigationIconView> _navigationViews;
+
+  SettingsWidget settingsWidget = new SettingsWidget();
 
   @override
   void initState() {
@@ -74,25 +81,47 @@ class HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
       new NavigationIconView(
         icon: const Icon(Icons.select_all),
         title: "Picker",
+        fab: new FloatingActionButton(
+          onPressed: () {
+            
+          },
+          tooltip: 'Save to Favorites',
+          child: new Icon(Icons.favorite),
+        ),
         body: new ColorPickerWidget(),
         vsync: this,
       ),
       new NavigationIconView(
         icon: const Icon(Icons.shuffle),
         title: "Random",
+        fab: new FloatingActionButton(
+          onPressed: () {
+            
+          },
+          tooltip: 'Save to Favorites',
+          child: new Icon(Icons.favorite),
+        ),
         body: new RandomColorWidget(),
         vsync: this,
       ),
       new NavigationIconView(
         icon: const Icon(Icons.favorite),
         title: "Favorites",
+        fab: null,
         body: new FavoritesColorWidget(),
         vsync: this,
       ),
       new NavigationIconView(
         icon: const Icon(Icons.settings),
         title: "Settings",
-        body: new SettingsWidget(),
+        fab: new FloatingActionButton(
+          onPressed: () {
+            
+          },
+          tooltip: 'Save settings',
+          child: new Icon(Icons.check),
+        ),
+        body: settingsWidget,
         vsync: this,
       )
     ];
@@ -101,6 +130,9 @@ class HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
     }
 
     _navigationViews[_currentIndex].controller.value = 1.0;
+    setState(() {
+      _fab = _navigationViews[_currentIndex].fab;
+    });
   }
 
   @override
@@ -149,6 +181,7 @@ class HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
         setState(() {
           _navigationViews[_currentIndex].controller.reverse();
           _currentIndex = index;
+          _fab = _navigationViews[_currentIndex].fab;
           _navigationViews[_currentIndex].controller.forward();
         });
       },
@@ -161,6 +194,7 @@ class HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
       body: new Center(
         child: _buildTransitionsStack()
       ),
+      floatingActionButton: _fab,
       bottomNavigationBar: botNavBar,
     );
   }

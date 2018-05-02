@@ -36,49 +36,34 @@ class ColorPickerWidgetState extends State<ColorPickerWidget> {
     });
   }
 
-  _saveColorToFavorite() {
-
-  }
-
   @override
   Widget build(BuildContext context) {
 
-    return new Scaffold(
-      body: new Column(
+    return new Container(
+      child: new Column(
         children: <Widget>[
-          new Expanded(
-            flex: 1,
-            child:new Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-                child:new Center(
-                  child: new Text("Pick a color to change it"),
-                ),
-            ),
+          new Padding(
+            padding: const EdgeInsets.only(
+                top: 10.0,
+                bottom: 10.0
+              ),
+              child:new Center(
+                child: new Text("Pick a color to change it"),
+              ),
           ),
-          new Expanded(
-            flex: 8,
-            child: new Padding(
-              padding: const EdgeInsets.only(
-                right: 15.0,
-                left: 15.0
-              ),
-              child: new ColorPicker(
-                pickerColor: pickerColor,
-                onColorChanged: onColorChanged,
-                colorPickerWidth: 800.0,
-                pickerAreaHeightPercent: 0.6,
-              ),
+          new Padding(
+            padding: const EdgeInsets.only(
+              right: 15.0,
+              left: 15.0
+            ),
+            child: new ColorPicker(
+              pickerColor: pickerColor,
+              onColorChanged: onColorChanged,
+              colorPickerWidth: 800.0,
+              pickerAreaHeightPercent: 0.6,
             ),
           ),
         ],
-      ),
-      floatingActionButton: new FloatingActionButton(
-        child: new Icon(Icons.favorite, size: 24.0),
-        backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Theme.of(context).secondaryHeaderColor,
-        onPressed: () {
-          _saveColorToFavorite();
-        },
       )
     );
   }

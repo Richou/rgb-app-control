@@ -102,8 +102,8 @@ class SettingsWidgetState extends State<SettingsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      body: new ListView(
+    return new Container(
+      child: new ListView(
         children: <Widget>[
           new Padding(
             padding: const EdgeInsets.only(
@@ -209,14 +209,6 @@ class SettingsWidgetState extends State<SettingsWidget> {
             ),
           ),
         ],
-      ),
-      floatingActionButton: new FloatingActionButton(
-        child: new Icon(Icons.check, size: 24.0),
-        backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Theme.of(context).secondaryHeaderColor,
-        onPressed: () {
-          _submit();
-        },
       ),
     );
   }
