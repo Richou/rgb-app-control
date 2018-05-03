@@ -4,62 +4,7 @@ import 'package:rgb_control_app/color_picker_widget.dart';
 import 'package:rgb_control_app/random_color_widget.dart';
 import 'package:rgb_control_app/favorites_color_widget.dart';
 import 'package:rgb_control_app/settings_widget.dart';
-
-class NavigationIconView {
-  NavigationIconView({
-    Widget icon,
-    Widget body,
-    String title,
-    FloatingActionButton fab,
-    TickerProvider vsync,
-  }) : _body = body,
-       item = new BottomNavigationBarItem(
-         icon: icon,
-         title: new Text(title),
-       ),
-       fab = fab,
-       controller = new AnimationController(
-         duration: kThemeAnimationDuration,
-         vsync: vsync,
-       ) {
-    _animation = new CurvedAnimation(
-      parent: controller,
-      curve: const Interval(0.5, 1.0, curve: Curves.fastOutSlowIn),
-    );
-  }
-
-  final Widget _body;
-  final BottomNavigationBarItem item;
-  final FloatingActionButton fab;
-  final AnimationController controller;
-  CurvedAnimation _animation;
-
-  FadeTransition transition(BuildContext context) {
-    final ThemeData themeData = Theme.of(context);
-    Color iconColor = themeData.brightness == Brightness.light
-          ? themeData.primaryColor
-          : themeData.accentColor;
-    
-    return new FadeTransition(
-      opacity: _animation,
-      child: new SlideTransition(
-        position: new Tween<Offset>(
-          begin: const Offset(0.0, 0.02), // Slightly down.
-          end: Offset.zero,
-        ).animate(_animation),
-        child: new IconTheme(
-          data: new IconThemeData(
-            color: iconColor,
-            size: 120.0,
-          ),
-          child: new Semantics(
-            child: _body,
-          ),
-        ),
-      ),
-    );
-  }
-}
+import 'package:rgb_control_app/navigation_view.dart';
 
 class HomeWidget extends StatefulWidget {
   @override
@@ -70,62 +15,63 @@ class HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
 
   FloatingActionButton _fab;
   int _currentIndex = 0;
-  List<NavigationIconView> _navigationViews;
-
-  SettingsWidget settingsWidget = new SettingsWidget();
+  List<NavigationView> _navigationViews;
+  final settingsGlobalKey = new GlobalKey<SettingsWidgetState>();
+  final pickerGlobalKey = new GlobalKey<ColorPickerWidgetState>();
+  final randomGlobalKey = new GlobalKey<RandomColorWidgetState>();
 
   @override
   void initState() {
     super.initState();
-    _navigationViews = <NavigationIconView>[
-      new NavigationIconView(
+    _navigationViews = <NavigationView>[
+      new NavigationView(
         icon: const Icon(Icons.select_all),
         title: "Picker",
         fab: new FloatingActionButton(
           onPressed: () {
-            
+            pickerGlobalKey.currentState.saveSelectedColorToFavorites();
           },
           tooltip: 'Save to Favorites',
           child: new Icon(Icons.favorite),
         ),
-        body: new ColorPickerWidget(),
+        body: new ColorPickerWidget(key: pickerGlobalKey),
         vsync: this,
       ),
-      new NavigationIconView(
+      new NavigationView(
         icon: const Icon(Icons.shuffle),
         title: "Random",
         fab: new FloatingActionButton(
           onPressed: () {
-            
+            randomGlobalKey.currentState.saveSelectedColorToFavorites();
           },
           tooltip: 'Save to Favorites',
           child: new Icon(Icons.favorite),
         ),
-        body: new RandomColorWidget(),
+        body: new RandomColorWidget(key: randomGlobalKey),
         vsync: this,
       ),
-      new NavigationIconView(
+      new NavigationView(
         icon: const Icon(Icons.favorite),
         title: "Favorites",
         fab: null,
         body: new FavoritesColorWidget(),
         vsync: this,
       ),
-      new NavigationIconView(
+      new NavigationView(
         icon: const Icon(Icons.settings),
         title: "Settings",
         fab: new FloatingActionButton(
           onPressed: () {
-            
+            settingsGlobalKey.currentState.submit();
           },
           tooltip: 'Save settings',
           child: new Icon(Icons.check),
         ),
-        body: settingsWidget,
+        body: new SettingsWidget(key: settingsGlobalKey),
         vsync: this,
       )
     ];
-    for (NavigationIconView view in _navigationViews) {
+    for (NavigationView view in _navigationViews) {
       view.controller.addListener(_rebuild);
     }
 
@@ -137,7 +83,7 @@ class HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    for (NavigationIconView view in _navigationViews) {
+    for (NavigationView view in _navigationViews) {
       view.controller.dispose();
     }
     super.dispose();
@@ -152,7 +98,7 @@ class HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
   Widget _buildTransitionsStack() {
     final List<FadeTransition> transitions = <FadeTransition>[];
 
-    for (NavigationIconView view in _navigationViews) {
+    for (NavigationView view in _navigationViews) {
       transitions.add(view.transition(context));
     }
 
@@ -173,7 +119,7 @@ class HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
 
     final BottomNavigationBar botNavBar = new BottomNavigationBar(
       items: _navigationViews
-          .map((NavigationIconView navigationView) => navigationView.item)
+          .map((NavigationView navigationView) => navigationView.item)
           .toList(),
       currentIndex: _currentIndex,
       type: BottomNavigationBarType.fixed,

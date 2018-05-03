@@ -4,6 +4,8 @@ import 'package:rgb_control_app/color_mapping.dart';
 import 'dart:convert';
 
 class SettingsWidget extends StatefulWidget {
+  const SettingsWidget({Key key}) : super(key: key);
+
   @override
   createState() => new SettingsWidgetState();
 }
@@ -88,9 +90,10 @@ class SettingsWidgetState extends State<SettingsWidget> {
       ..green = _greenBinding;
 
     sharedPreferences.setString("ColorBindings", json.encode(colorBindings.toMap()));
+    Scaffold.of(context).showSnackBar(new SnackBar(content: new Text("Settings successfuly saved !")));
   }
 
-  _submit() {
+  submit() {
     final form = formKey.currentState;
 
     if (form.validate()) {

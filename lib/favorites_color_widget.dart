@@ -9,8 +9,8 @@ class FavoritesColorWidgetState extends State<FavoritesColorWidget> {
   @override
   Widget build(BuildContext context) {
 
-    return new Scaffold(
-      body: new Center(
+    return new Container(
+      child: new Center(
         child: new Text('Here is the list of your favorites color !'),
       )
     );

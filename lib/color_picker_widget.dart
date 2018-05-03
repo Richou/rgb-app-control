@@ -4,6 +4,8 @@ import 'package:rgb_control_app/color_request.dart';
 import 'dart:async';
 
 class ColorPickerWidget extends StatefulWidget {
+  const ColorPickerWidget({Key key}) : super(key: key);
+
   @override
   createState() => new ColorPickerWidgetState();
 }
@@ -15,6 +17,10 @@ class ColorPickerWidgetState extends State<ColorPickerWidget> {
   ColorRequest colorRequest;
 
   Timer timer;
+
+  final SnackBar snackBar = new SnackBar(
+    content: new Text("Picked color successfuly saved to Favorites !")
+  );
 
   @override
   void initState() {
@@ -34,6 +40,10 @@ class ColorPickerWidgetState extends State<ColorPickerWidget> {
     setState(() {
       currentColor = color;
     });
+  }
+
+  saveSelectedColorToFavorites() {
+    Scaffold.of(context).showSnackBar(snackBar);
   }
 
   @override

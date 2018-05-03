@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:rgb_control_app/color_request.dart';
 
 class RandomColorWidget extends StatefulWidget {
+  const RandomColorWidget({ Key key}) : super(key: key);
+
   @override
   createState() => new RandomColorWidgetState();
 }
@@ -14,7 +16,7 @@ class RandomColorWidgetState extends State<RandomColorWidget> {
   ColorRequest colorRequest;
 
   final snackBar = new SnackBar(
-    content: new Text('The color has been saved to Favorites !'),
+    content: new Text("Random color successfuly saved to Favorites !"),
   );
 
   @override
@@ -22,6 +24,10 @@ class RandomColorWidgetState extends State<RandomColorWidget> {
     super.initState();
     _randomColor = Colors.green;
     colorRequest = new ColorRequest();
+  }
+
+  saveSelectedColorToFavorites() {
+    Scaffold.of(context).showSnackBar(snackBar);
   }
 
   _computeRandomColor() {
