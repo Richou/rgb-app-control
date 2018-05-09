@@ -1,4 +1,4 @@
-package com.example.rgbcontrolapp;
+package com.heanoria.rgbcontrolapp.droid;
 
 import android.os.Bundle;
 

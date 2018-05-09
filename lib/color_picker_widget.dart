@@ -50,6 +50,7 @@ class ColorPickerWidgetState extends State<ColorPickerWidget> {
   Widget build(BuildContext context) {
 
     return new Container(
+      color: Colors.white,
       child: new Column(
         children: <Widget>[
           new Padding(

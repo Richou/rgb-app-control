@@ -53,6 +53,7 @@ class RandomColorWidgetState extends State<RandomColorWidget> {
   @override
   Widget build(BuildContext context) {
     return new Container(
+      color: Colors.white,
       child: new ListView(
         children: <Widget>[
           new Padding(
