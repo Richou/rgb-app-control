@@ -106,6 +106,7 @@ class SettingsWidgetState extends State<SettingsWidget> {
   @override
   Widget build(BuildContext context) {
     return new Container(
+      color: Colors.white,
       child: new ListView(
         children: <Widget>[
           new Padding(
