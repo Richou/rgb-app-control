@@ -13,6 +13,10 @@ class ColorRequest {
     print(response);
   }
 
+  sendColorValues(ColorValues colorValues) async {
+
+  }
+
   _callApi(String host) async {
     return await http.get(host);
   }

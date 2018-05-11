@@ -66,7 +66,7 @@ class SettingsWidgetState extends State<SettingsWidget> {
       _portController.text = "80";
     } else {
       _portController.text = savedPort.toString();    
-    }    
+    }
   }
 
   _setSavedColorsBinding() async {

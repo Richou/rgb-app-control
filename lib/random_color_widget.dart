@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:rgb_control_app/color_request.dart';
+import 'package:rgb_control_app/favorites_color_manager.dart';
 
 class RandomColorWidget extends StatefulWidget {
   const RandomColorWidget({ Key key}) : super(key: key);
@@ -15,6 +16,8 @@ class RandomColorWidgetState extends State<RandomColorWidget> {
   String _rgbString = "N/A";
   ColorRequest colorRequest;
 
+  FavoriteColorManager favoriteColorManager = new FavoriteColorManager();
+
   final snackBar = new SnackBar(
     content: new Text("Random color successfuly saved to Favorites !"),
   );
@@ -27,6 +30,7 @@ class RandomColorWidgetState extends State<RandomColorWidget> {
   }
 
   saveSelectedColorToFavorites() {
+    favoriteColorManager.saveColorToFavorites(_randomColor);
     Scaffold.of(context).showSnackBar(snackBar);
   }
 

@@ -3,6 +3,8 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:rgb_control_app/color_request.dart';
 import 'dart:async';
 
+import 'package:rgb_control_app/favorites_color_manager.dart';
+
 class ColorPickerWidget extends StatefulWidget {
   const ColorPickerWidget({Key key}) : super(key: key);
 
@@ -17,6 +19,8 @@ class ColorPickerWidgetState extends State<ColorPickerWidget> {
   ColorRequest colorRequest;
 
   Timer timer;
+
+  FavoriteColorManager favoritesColorManager = new FavoriteColorManager();
 
   final SnackBar snackBar = new SnackBar(
     content: new Text("Picked color successfuly saved to Favorites !")
@@ -43,6 +47,7 @@ class ColorPickerWidgetState extends State<ColorPickerWidget> {
   }
 
   saveSelectedColorToFavorites() {
+    favoritesColorManager.saveColorToFavorites(currentColor);
     Scaffold.of(context).showSnackBar(snackBar);
   }
 
