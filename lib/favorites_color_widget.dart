@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rgb_control_app/color_mapping.dart';
 import 'package:rgb_control_app/favorites_color_manager.dart';
+import 'dart:convert';
 
 class FavoritesColorWidget extends StatefulWidget {
   @override
@@ -25,6 +26,11 @@ class FavoritesColorWidgetState extends State<FavoritesColorWidget> {
     });
   }
 
+  Color _renderColor(item) {
+    ColorValues color = ColorValues.fromJson(json.decode(item));
+    return new Color(color.toHexString());
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Container(
@@ -42,9 +48,6 @@ class FavoritesColorWidgetState extends State<FavoritesColorWidget> {
             // what to do after an item has been swiped away.
             onDismissed: (direction) {
               favoriteColorManager.removeColorAt(index);
-
-              Scaffold.of(context).showSnackBar(
-                  new SnackBar(content: new Text("$item dismissed")));
             },
             // Show a red background as the item is swiped away
             background: new Container(color: Colors.red),
@@ -52,8 +55,24 @@ class FavoritesColorWidgetState extends State<FavoritesColorWidget> {
               onTap: () {
                 print("$item tapped");
               },
-              child: new ListTile(title: new Text('$item'),
-            ),),
+              child: new Row(
+                children: <Widget>[
+                  new Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: new Container(
+                      decoration: new BoxDecoration(
+                          color: Colors.white,
+                          border: new Border.all(
+                            color: _renderColor(item),
+                            width: 20.0,
+                          ),
+                        ),
+                      ),
+                  ),
+                  new Text("$item")
+                ],
+              ),
+            ),
           );
         },
       ),

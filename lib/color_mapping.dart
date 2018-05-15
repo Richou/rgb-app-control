@@ -71,4 +71,17 @@ class ColorValues {
     map['green'] = this.green;
     return map;
   }
+
+  int toHexString() {
+    String val = "0xFF$red$green$blue";
+    return int.parse(val);
+  }
+
+  factory ColorValues.fromJson(Map<String, dynamic> json) {
+    return new ColorValues(
+      red: json['red'],
+      green: json['green'],
+      blue: json['blue']
+    );
+  }
 }
