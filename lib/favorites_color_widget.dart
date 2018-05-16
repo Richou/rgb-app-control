@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rgb_control_app/color_mapping.dart';
 import 'package:rgb_control_app/favorites_color_manager.dart';
+import 'package:rgb_control_app/color_request.dart';
 import 'dart:convert';
 
 class FavoritesColorWidget extends StatefulWidget {
@@ -12,6 +13,8 @@ class FavoritesColorWidgetState extends State<FavoritesColorWidget> {
   FavoriteColorManager favoriteColorManager = new FavoriteColorManager();
 
   List<String> favoritesColors = new List<String>();
+
+  ColorRequest colorRequest = new ColorRequest();
 
   @override
   void initState() {
@@ -54,9 +57,7 @@ class FavoritesColorWidgetState extends State<FavoritesColorWidget> {
             // Show a red background as the item is swiped away
             background: new Container(color: Colors.red),
             child: new InkWell(
-              onTap: () {
-                print("$item tapped");
-              },
+              onTap: () => colorRequest.sendColor(colorForItem),
               child: new Row(
                 children: <Widget>[
                   new Padding(
