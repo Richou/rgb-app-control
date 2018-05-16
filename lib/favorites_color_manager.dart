@@ -1,9 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:rgb_control_app/color_mapping.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 
 class FavoriteColorManager {
   static const FAVORITES_COLOR_KEY = "FavoritesColors";
@@ -19,7 +19,9 @@ class FavoriteColorManager {
 
   Future<List<String>> fetchColorsFromFavorites() async {
     var sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getStringList(FAVORITES_COLOR_KEY);
+    var savedColorsString = sharedPreferences.getStringList(FAVORITES_COLOR_KEY);
+    if (savedColorsString == null) return new List();
+    return savedColorsString;
   }
 
   void removeColor(String item) async {

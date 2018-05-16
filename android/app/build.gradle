@@ -31,11 +31,64 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release
+        debug
+    }
+
+    Properties localProps = new Properties()
+    String signingsRootPath = ""
+    localProps.load(project.rootProject.file('local.properties').newDataInputStream())
+    if (localProps != null && localProps.containsKey('signings.root.path')) {
+        signingsRootPath = localProps['signings.root.path']
+    }
+
+    Properties signingProps = new Properties()
+    def signingsPropFile = file(new File(signingsRootPath + '/signings.properties'))
+    if (signingsPropFile.canRead()) {
+        signingProps.load(new FileInputStream(signingsPropFile))
+        if (signingProps != null &&
+                signingProps.containsKey('RELEASE_STORE_FILE') &&
+                signingProps.containsKey('RELEASE_STORE_PASSWORD') &&
+                signingProps.containsKey('RELEASE_KEY_ALIAS') &&
+                signingProps.containsKey('RELEASE_KEY_PASSWORD')) {
+            android.signingConfigs.release.storeFile = file(signingProps.getProperty('RELEASE_STORE_FILE').replace('${path}', signingsRootPath))
+            android.signingConfigs.release.storePassword = signingProps['RELEASE_STORE_PASSWORD']
+            android.signingConfigs.release.keyAlias = signingProps['RELEASE_KEY_ALIAS']
+            android.signingConfigs.release.keyPassword = signingProps['RELEASE_KEY_PASSWORD']
+        } else {
+            println 'signings.properties found but some entries are missing'
+            android.buildTypes.release.signingConfig = null
+        }
+
+        if (signingProps != null &&
+                signingProps.containsKey('DEBUG_STORE_FILE') &&
+                signingProps.containsKey('DEBUG_STORE_PASSWORD') &&
+                signingProps.containsKey('DEBUG_KEY_ALIAS') &&
+                signingProps.containsKey('DEBUG_KEY_PASSWORD')) {
+            android.signingConfigs.debug.storeFile = file(signingProps.getProperty('DEBUG_STORE_FILE').replace('${path}', signingsRootPath))
+            android.signingConfigs.debug.storePassword = signingProps['DEBUG_STORE_PASSWORD']
+            android.signingConfigs.debug.keyAlias = signingProps['DEBUG_KEY_ALIAS']
+            android.signingConfigs.debug.keyPassword = signingProps['DEBUG_KEY_PASSWORD']
+        } else {
+            println 'signings.properties found but some entries are missing'
+            android.buildTypes.debug.signingConfig = null
+        }
+    } else {
+        println 'signings.properties not found'
+        android.buildTypes.release.signingConfig = null
+        android.buildTypes.debug.signingConfig = null
+    }
+
+
     buildTypes {
+        debug{
+            signingConfig signingConfigs.debug
+        }
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 }
