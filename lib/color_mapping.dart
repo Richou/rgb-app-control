@@ -73,8 +73,14 @@ class ColorValues {
   }
 
   int toHexString() {
-    String val = "0xFF$red$green$blue";
+    String val = "0xFF${convertToHex(red)}${convertToHex(green)}${convertToHex(blue)}";
     return int.parse(val);
+  }
+
+  String convertToHex(int toConvert) {
+    String hex = toConvert.toRadixString(16);
+    if (hex.length == 1) return "0$hex";
+    return hex;
   }
 
   factory ColorValues.fromJson(Map<String, dynamic> json) {

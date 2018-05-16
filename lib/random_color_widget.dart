@@ -25,7 +25,7 @@ class RandomColorWidgetState extends State<RandomColorWidget> {
   @override
   void initState() {
     super.initState();
-    _randomColor = Colors.green;
+    _randomColor = Colors.white;
     colorRequest = new ColorRequest();
   }
 

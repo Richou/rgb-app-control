@@ -40,6 +40,8 @@ class FavoritesColorWidgetState extends State<FavoritesColorWidget> {
         itemBuilder: (context, index) {
           final item = favoritesColors[index];
 
+          final colorForItem = _renderColor(item);
+
           return new Dismissible(
             // Each Dismissible must contain a Key. Keys allow Flutter to
             // uniquely identify Widgets.
@@ -47,7 +49,7 @@ class FavoritesColorWidgetState extends State<FavoritesColorWidget> {
             // We also need to provide a function that will tell our app
             // what to do after an item has been swiped away.
             onDismissed: (direction) {
-              favoriteColorManager.removeColorAt(index);
+              favoriteColorManager.removeColor(item);
             },
             // Show a red background as the item is swiped away
             background: new Container(color: Colors.red),
@@ -58,18 +60,18 @@ class FavoritesColorWidgetState extends State<FavoritesColorWidget> {
               child: new Row(
                 children: <Widget>[
                   new Padding(
-                    padding: const EdgeInsets.all(5.0),
+                    padding: const EdgeInsets.all(7.0),
                     child: new Container(
                       decoration: new BoxDecoration(
                           color: Colors.white,
                           border: new Border.all(
-                            color: _renderColor(item),
+                            color: colorForItem,
                             width: 20.0,
                           ),
                         ),
                       ),
                   ),
-                  new Text("$item")
+                  new Text("Red: ${colorForItem.red}, Green: ${colorForItem.green}, Blue: ${colorForItem.blue}")
                 ],
               ),
             ),

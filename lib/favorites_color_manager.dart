@@ -22,10 +22,10 @@ class FavoriteColorManager {
     return sharedPreferences.getStringList(FAVORITES_COLOR_KEY);
   }
 
-  void removeColorAt(int index) async {
+  void removeColor(String item) async {
     var sharedPreferences = await SharedPreferences.getInstance();
     List<String> savedColor = sharedPreferences.getStringList(FAVORITES_COLOR_KEY);
-    savedColor.removeAt(index);
+    savedColor.remove(item);
     sharedPreferences.setStringList(FAVORITES_COLOR_KEY, savedColor);
   }
 
