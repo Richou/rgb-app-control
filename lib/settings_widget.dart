@@ -128,7 +128,7 @@ class SettingsWidgetState extends State<SettingsWidget> {
                   ),
                   new TextFormField(
                     decoration: new InputDecoration(labelText: 'IP Address'),
-                    keyboardType: TextInputType.number,
+                    keyboardType: (Theme.of(context).platform == TargetPlatform.iOS) ? TextInputType.text : TextInputType.number,
                     controller: _ipAddressController,
                     onSaved: (val) => _ipAddress = _ipAddressController.text,
                   ),
