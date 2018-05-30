@@ -69,14 +69,15 @@ class ColorPickerWidgetState extends State<ColorPickerWidget> {
           ),
           new Padding(
             padding: const EdgeInsets.only(
-              right: 15.0,
-              left: 15.0
+              right: 10.0,
+              left: 10.0,
+              bottom: 50.0
             ),
             child: new ColorPicker(
               pickerColor: pickerColor,
               onColorChanged: onColorChanged,
-              colorPickerWidth: 800.0,
-              pickerAreaHeightPercent: 0.6,
+              colorPickerWidth: 500.0,
+              pickerAreaHeightPercent: MediaQuery.of(context).size.height / (MediaQuery.of(context).size.height * 2.5)
             ),
           ),
         ],
