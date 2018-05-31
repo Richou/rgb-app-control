@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:rgb_control_app/colorpicker.dart';
 import 'package:rgb_control_app/color_request.dart';
 import 'dart:async';
 
@@ -77,7 +77,7 @@ class ColorPickerWidgetState extends State<ColorPickerWidget> {
               pickerColor: pickerColor,
               onColorChanged: onColorChanged,
               colorPickerWidth: 500.0,
-              pickerAreaHeightPercent: 0.4
+              pickerAreaHeightPercent: 0.6
             ),
           ),
         ],
