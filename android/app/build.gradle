@@ -26,7 +26,7 @@ android {
         applicationId "com.heanoria.rgbcontrolapp.droid"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 1
+        versionCode 101
         versionName "1.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
