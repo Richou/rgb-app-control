@@ -71,13 +71,12 @@ class ColorPickerWidgetState extends State<ColorPickerWidget> {
             padding: const EdgeInsets.only(
               right: 10.0,
               left: 10.0,
-              bottom: 50.0
             ),
             child: new ColorPicker(
               pickerColor: pickerColor,
               onColorChanged: onColorChanged,
               colorPickerWidth: 500.0,
-              pickerAreaHeightPercent: 0.7
+              pickerAreaHeightPercent: 0.6
             ),
           ),
         ],
