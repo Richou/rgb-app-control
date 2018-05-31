@@ -77,7 +77,7 @@ class ColorPickerWidgetState extends State<ColorPickerWidget> {
               pickerColor: pickerColor,
               onColorChanged: onColorChanged,
               colorPickerWidth: 500.0,
-              pickerAreaHeightPercent: MediaQuery.of(context).size.height / (MediaQuery.of(context).size.height * 3)
+              pickerAreaHeightPercent: 0.4
             ),
           ),
         ],
