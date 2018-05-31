@@ -33,13 +33,7 @@ class _ColorPickerState extends State<ColorPicker> {
 
   List<Map<String, List<String>>> colorTypes = [
     {
-      'HEX': ['R', 'G', 'B']
-    },
-    {
       'RGB': ['R', 'G', 'B']
-    },
-    {
-      'HSL': ['H', 'S', 'L']
     },
   ];
   String colorType = 'RGB';

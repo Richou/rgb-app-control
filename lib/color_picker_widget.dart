@@ -77,7 +77,7 @@ class ColorPickerWidgetState extends State<ColorPickerWidget> {
               pickerColor: pickerColor,
               onColorChanged: onColorChanged,
               colorPickerWidth: 500.0,
-              pickerAreaHeightPercent: 0.6
+              pickerAreaHeightPercent: 0.7
             ),
           ),
         ],
